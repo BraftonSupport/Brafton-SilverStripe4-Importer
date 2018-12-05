@@ -1,0 +1,6 @@
+SilverStripe\Assets\File:
+  extensions:
+    - textagroup\brafton_api\Extensions\BraftonSiteConfigExtension
+SilverStripe\AssetAdmin\Forms\FileFormFactory:
+  extensions:
+    - textagroup\brafton_api\Extensions\BraftonFactoryExtension
