@@ -3,6 +3,10 @@
 namespace textagroup\brafton_api\Service;
 
 use Silverstripe\SiteConfig\SiteConfig;
+use textagroup\brafton_api\DataObjects\BraftonNewsItem;
+use textagroup\brafton_api\DataObjects\BraftonNewsCategory;
+use SilverStripe\Assets\Folder;
+use SilverStripe\Assets\Image;
 
 class BraftonService {
     private $api;
@@ -11,8 +15,8 @@ class BraftonService {
 
     public function __construct() {
         $siteConfig = SiteConfig::current_site_config();
-        $apiUrl = 'https://api.brafton.com';
-        $apiKey = 'c53b3f02-07ef-4df1-9dc9-1fb5c25203db';
+        $apiUrl = $siteConfig->BraftonApiUrl;
+        $apiKey = $siteConfig->BraftonApiKey;
         if (!$apiUrl || !$apiKey) {
             return null;
         }
@@ -147,7 +151,7 @@ class BraftonService {
         $name = basename($url);
         $fileSize = filesize($metaData['uri']);
         $tmpName = $metaData['uri'];
-        $relativeImagePath = $imageFolder->getRelativePath() . $name;
+        $relativeImagePath = $name;
         $imagePath = BASE_PATH . '/' . $relativeImagePath;
 
         fclose($tmpImage);
@@ -156,7 +160,7 @@ class BraftonService {
             $pathInfo = pathinfo($url);
             if (isset($pathInfo['extension'])) {
                 $name = basename($tmpName) . '.' . $pathInfo['extension'];
-                $relativeImagePath = $imageFolder->getRelativePath() . $name;
+                $relativeImagePath = $name;
                 $imagePath = BASE_PATH . '/' . $relativeImagePath;
             }
         }

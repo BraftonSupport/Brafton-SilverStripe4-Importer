@@ -5,6 +5,7 @@ namespace textagroup\brafton_api\Extensions;
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\Forms\Form;
 use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\TextField;
 use Silverstripe\SiteConfig\SiteConfig;
 
 /**
@@ -17,20 +18,20 @@ class BraftonSiteConfigExtension extends DataExtension {
         'BraftonApiKey' => 'Varchar'
     );
 
-    // public function updateCMSFields(FieldList $fields) {
-    //     $fields->addfieldToTab('Root.Brafton',
-    //         TextField::create(
-    //             'BraftonApiUrl',
-    //             _t('BraftonApi.BRAFTONAPIURL', 'Brafton Api Url')
-    //         )
-    //     );
-    //     $fields->addfieldToTab('Root.Brafton',
-    //         TextField::create(
-    //             'BraftonApiKey',
-    //             _t('BraftonApi.BRAFTONAPIKEY', 'Brafton Api Key')
-    //         )
-    //     );
-    // }
+    public function updateCMSFields(FieldList $fields) {
+        $fields->addfieldToTab('Root.Brafton',
+            TextField::create(
+                'BraftonApiUrl',
+                _t('BraftonApi.BRAFTONAPIURL', 'Brafton Api Url')
+            )
+        );
+        $fields->addfieldToTab('Root.Brafton',
+            TextField::create(
+                'BraftonApiKey',
+                _t('BraftonApi.BRAFTONAPIKEY', 'Brafton Api Key')
+            )
+        );
+    }
 
 	public function requireDefaultRecords() {
 		parent::requireDefaultRecords();

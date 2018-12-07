@@ -4,7 +4,7 @@ namespace textagroup\brafton_api\DataObjects;
 
 use SilverStripe\Security\Security;
 use SilverStripe\ORM\DataObject;
-use textagroup\brafton_api\DataObjects\BraftonCategory;
+
 
 /**
 * @author Kirk Mayo kirk.mayo@solnet.co.nz
@@ -32,10 +32,10 @@ class BraftonNewsItem extends DataObject
     );
 
     private static $has_many = array(
-        'Photos' => 'BraftonNewsItemImage'
+        'Photos' => 'textagroup\brafton_api\DataObjects\BraftonNewsItemImage'
     );
 
     private static $many_many = array(
-        'Categories' => 'BraftonNewsCategory'
+        'Categories' => 'textagroup\brafton_api\DataObjects\BraftonNewsCategory'
     );
 }
