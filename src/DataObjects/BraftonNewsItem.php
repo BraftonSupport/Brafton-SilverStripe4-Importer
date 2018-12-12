@@ -32,10 +32,10 @@ class BraftonNewsItem extends DataObject
     );
 
     private static $has_many = array(
-        'Photos' => 'textagroup\brafton_api\DataObjects\BraftonNewsItemImage'
+        'Photos' => 'textagroup\brafton_api\DataObjects\BraftonNewsItemImage',
     );
 
     private static $many_many = array(
-        'Categories' => 'textagroup\brafton_api\DataObjects\BraftonNewsCategory'
+        'Categories' => 'textagroup\brafton_api\DataObjects\BraftonNewsCategory',
     );
 }

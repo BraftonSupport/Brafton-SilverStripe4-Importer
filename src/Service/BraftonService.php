@@ -4,9 +4,11 @@ namespace textagroup\brafton_api\Service;
 
 use Silverstripe\SiteConfig\SiteConfig;
 use textagroup\brafton_api\DataObjects\BraftonNewsItem;
+use textagroup\brafton_api\DataObjects\BraftonNewsItemImage;
 use textagroup\brafton_api\DataObjects\BraftonNewsCategory;
 use SilverStripe\Assets\Folder;
 use SilverStripe\Assets\Image;
+use SilverStripe\Core\Manifest\Module;
 
 class BraftonService {
     private $api;
@@ -90,6 +92,7 @@ class BraftonService {
                 $newsCategory->Title = $category->getName();
                 $newsCategory->write();
             }
+            $news->Categories = $category->getName();
             $news->Categories()->add($newsCategory);
         }
 
@@ -115,7 +118,6 @@ class BraftonService {
 
             $news->Photos()->add($imageObj);
         }
-
         $news->write();
         $categoriesUpdated = false;
         // removed old categories no longer on the news item
@@ -146,16 +148,15 @@ class BraftonService {
         if (!$imageSizeInfo) {
             //continue;
         }
-
+        $itemId = $item->getId();
         $imageFolder = Folder::find_or_make($this->folder . '/' . $item->getId());
         $name = basename($url);
         $fileSize = filesize($metaData['uri']);
         $tmpName = $metaData['uri'];
         $relativeImagePath = $name;
         $imagePath = BASE_PATH . '/' . $relativeImagePath;
-
+        $server = $_SERVER['HTTP_HOST'];
         fclose($tmpImage);
-
         if (file_exists($imagePath)) {
             $pathInfo = pathinfo($url);
             if (isset($pathInfo['extension'])) {
@@ -164,14 +165,12 @@ class BraftonService {
                 $imagePath = BASE_PATH . '/' . $relativeImagePath;
             }
         }
-
         $image = fopen($imagePath, 'w');
         fwrite($image, $fileContents);
         fclose($image);
-
         $image = new Image();
-        $image->setParentID($imageFolder->ID);
-        $image->setName($name);
+        //$image->setParentID($imageFolder->ID);
+        //$image->setName($name);
         $image->Title = $photo->getAlt();
         $image->setFilename($relativeImagePath);
         $image->write();
