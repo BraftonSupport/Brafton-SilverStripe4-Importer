@@ -21,7 +21,7 @@ class BraftonNewsItemImage extends DataObject
     );
 
     private static $has_one = array(
-        'News' => BraftonNewsItem::class,
+        'News' => 'BraftonNewsItem',
         'Image' => Image::class,
         'Thumb' => Image::class
     );
