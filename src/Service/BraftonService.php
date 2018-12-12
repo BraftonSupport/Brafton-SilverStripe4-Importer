@@ -115,7 +115,6 @@ class BraftonService {
                 }
             }
             $imageObj->write();
-
             $news->Photos()->add($imageObj);
         }
         $news->write();
