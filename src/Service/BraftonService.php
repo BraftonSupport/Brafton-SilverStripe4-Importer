@@ -2,6 +2,7 @@
 
 namespace textagroup\brafton_api\Service;
 
+use SilverStripe\Core\Environment;
 use Silverstripe\SiteConfig\SiteConfig;
 use textagroup\brafton_api\DataObjects\BraftonNewsItem;
 use textagroup\brafton_api\DataObjects\BraftonNewsItemImage;
@@ -9,6 +10,7 @@ use textagroup\brafton_api\DataObjects\BraftonNewsCategory;
 use SilverStripe\Assets\Folder;
 use SilverStripe\Assets\Image;
 use SilverStripe\Core\Manifest\Module;
+use SilverStripe\Core\Path;
 
 class BraftonService {
     private $api;
@@ -114,8 +116,8 @@ class BraftonService {
                     $imageObj->ThumbID = $file->ID;
                 }
             }
-            $imageObj->write();
-            $news->Photos()->add($imageObj);
+            $imageObj->write(); //write BraftonNewsItemImage object to database
+            $news->Photos()->add($imageObj); //add BraftonNewsItemImage object to BraftonNewsItem instance
         }
         $news->write();
         $categoriesUpdated = false;
@@ -127,6 +129,7 @@ class BraftonService {
         if ($categoriesUpdated) {
             $news->write();
         }
+        die();
     }
 
     /*
@@ -137,6 +140,7 @@ class BraftonService {
      * @return Image
      */
     public function createImageFile($photo, $url, $item) {
+        Environment::getEnv('SS_BASE_URL');
         $tmpImage = tmpfile();
         $fileContents = file_get_contents($url);
         fwrite($tmpImage,$fileContents);
@@ -149,25 +153,33 @@ class BraftonService {
         }
         $itemId = $item->getId();
         $imageFolder = Folder::find_or_make($this->folder . '/' . $item->getId());
+        /*$itemID = $item->getId();
+        $imageFolderID = $imageFolder->ID;
+        $imageFolderName = $imageFolder->Name;
+        $imageFolderParent = $imageFolder->ParentID;
+        $imageFolderTitle = $imageFolder->Title;*/
+        $imageFolderFileName = $imageFolder->Filename;
         $name = basename($url);
         $fileSize = filesize($metaData['uri']);
-        $tmpName = $metaData['uri'];
+        $tmpName = $metaData['uri'];  //local path for temp image
         $relativeImagePath = $name;
-        $imagePath = BASE_PATH . '/' . $relativeImagePath;
-        $server = $_SERVER['HTTP_HOST'];
+        $proper = str_replace('/', '\\',$imageFolderFileName);
+        $imagePath = BASE_PATH . '\\'.$proper.$relativeImagePath;
         fclose($tmpImage);
         if (file_exists($imagePath)) {
             $pathInfo = pathinfo($url);
             if (isset($pathInfo['extension'])) {
                 $name = basename($tmpName) . '.' . $pathInfo['extension'];
                 $relativeImagePath = $name;
-                $imagePath = BASE_PATH . '/' . $relativeImagePath;
+                $imagePath = BASE_PATH . $relativeImagePath;
             }
         }
         $image = fopen($imagePath, 'w');
         fwrite($image, $fileContents);
         fclose($image);
         $image = new Image();
+        $image_name = $name;
+        //$image->setFromLocalFile($tmpName,$name);
         //$image->setParentID($imageFolder->ID);
         //$image->setName($name);
         $image->Title = $photo->getAlt();

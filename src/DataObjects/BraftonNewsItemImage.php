@@ -4,7 +4,7 @@ namespace textagroup\brafton_api\DataObjects;
 
 use SilverStripe\Security\Security;
 use SilverStripe\ORM\DataObject;
-use textagroup\brafton_api\DataObjects\BraftonNewsItem;
+use SilverStripe\Assets\Image;
 
 /**
 * @author Kirk Mayo kirk.mayo@solnet.co.nz
@@ -21,7 +21,7 @@ class BraftonNewsItemImage extends DataObject
     );
 
     private static $has_one = array(
-        'News' => 'BraftonNewsItem',
+        'News' => 'textagroup\brafton_api\DataObjects\BraftonNewsItem',
         'Image' => Image::class,
         'Thumb' => Image::class
     );
