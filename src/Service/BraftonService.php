@@ -155,7 +155,7 @@ class BraftonService {
         $relativeImagePath = $name;
         $imagePath = BASE_PATH . '/' . $relativeImagePath;
         $server = $_SERVER['HTTP_HOST'];
-        fclose($tmpImage);
+        //fclose($tmpImage);
         if (file_exists($imagePath)) {
             $pathInfo = pathinfo($url);
             if (isset($pathInfo['extension'])) {
@@ -164,14 +164,14 @@ class BraftonService {
                 $imagePath = BASE_PATH . '/' . $relativeImagePath;
             }
         }
-        $image = fopen($imagePath, 'w');
+        /*$image = fopen($imagePath, 'w');
         fwrite($image, $fileContents);
-        fclose($image);
+        fclose($image);*/
         $image = new Image();
         //$image->setParentID($imageFolder->ID);
         //$image->setName($name);
         $image->Title = $photo->getAlt();
-        $image->setFilename($relativeImagePath);
+        $image->setFromLocalFile($tmpName,'public/resources/'.$relativeImagePath);
         $image->write();
         return $image;
     }
